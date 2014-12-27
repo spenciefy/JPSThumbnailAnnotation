@@ -24,10 +24,10 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
-@property (nonatomic, strong) ActionBlock disclosureBlock;
+@property (nonatomic, strong) ActionBlock expandBlock;
+@property (nonatomic, strong) ActionBlock shrinkBlock;
 
 @property (nonatomic, strong) CAShapeLayer *bgLayer;
-@property (nonatomic, strong) UIButton *disclosureButton;
 @property (nonatomic, assign) JPSThumbnailAnnotationViewState state;
 
 @end
@@ -100,7 +100,7 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
                                          disclosureIndicatorImage.size.height);
     
     [_disclosureButton addTarget:self action:@selector(didTapDisclosureButton) forControlEvents:UIControlEventTouchDown];
-    [self addSubview:_disclosureButton];
+   // [self addSubview:_disclosureButton];
 }
 
 - (void)setLayerProperties {
@@ -127,7 +127,9 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
     self.titleLabel.text = thumbnail.title;
     self.subtitleLabel.text = thumbnail.subtitle;
     self.imageView.image = thumbnail.image;
-    self.disclosureBlock = thumbnail.disclosureBlock;
+    self.expandBlock = thumbnail.expandBlock;
+    self.shrinkBlock = thumbnail.shrinkBlock;
+
 }
 
 #pragma mark - JPSThumbnailAnnotationViewProtocol
@@ -182,6 +184,8 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 }
 
 - (void)expand {
+     if (self.expandBlock) self.expandBlock();
+    
     if (self.state != JPSThumbnailAnnotationViewStateCollapsed) return;
     
     self.state = JPSThumbnailAnnotationViewStateAnimating;
@@ -197,6 +201,8 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 }
 
 - (void)shrink {
+    if (self.shrinkBlock) self.shrinkBlock();
+
     if (self.state != JPSThumbnailAnnotationViewStateExpanded) return;
     
     self.state = JPSThumbnailAnnotationViewStateAnimating;
@@ -251,29 +257,6 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
     CGPathRelease(toPath);
     
     [self.bgLayer addAnimation:animation forKey:animation.keyPath];
-}
-
-#pragma mark - Disclosure Button
-
-- (void)didTapDisclosureButton {
-    if (self.disclosureBlock) self.disclosureBlock();
-}
-
-+ (UIImage *)disclosureButtonImage {
-    CGSize size = CGSizeMake(21.0f, 36.0f);
-    UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
-    
-    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
-    [bezierPath moveToPoint:CGPointMake(2.0f, 2.0f)];
-    [bezierPath addLineToPoint:CGPointMake(10.0f, 10.0f)];
-    [bezierPath addLineToPoint:CGPointMake(2.0f, 18.0f)];
-    [[UIColor lightGrayColor] setStroke];
-    bezierPath.lineWidth = 3.0f;
-    [bezierPath stroke];
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 @end
