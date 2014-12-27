@@ -57,7 +57,6 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
     [self setupImageView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
-    [self setupDisclosureButton];
     [self setLayerProperties];
     [self setDetailGroupAlpha:0.0f];
 }
@@ -85,22 +84,6 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
     _subtitleLabel.textColor = [UIColor grayColor];
     _subtitleLabel.font = [UIFont systemFontOfSize:12.0f];
     [self addSubview:_subtitleLabel];
-}
-
-- (void)setupDisclosureButton {
-    BOOL iOS7 = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f;
-    UIButtonType buttonType = iOS7 ? UIButtonTypeSystem : UIButtonTypeCustom;
-    _disclosureButton = [UIButton buttonWithType:buttonType];
-    _disclosureButton.tintColor = [UIColor grayColor];
-    UIImage *disclosureIndicatorImage = [JPSThumbnailAnnotationView disclosureButtonImage];
-    [_disclosureButton setImage:disclosureIndicatorImage forState:UIControlStateNormal];
-    _disclosureButton.frame = CGRectMake(kJPSThumbnailAnnotationViewExpandOffset/2.0f + self.frame.size.width/2.0f + 8.0f,
-                                         26.5f,
-                                         disclosureIndicatorImage.size.width,
-                                         disclosureIndicatorImage.size.height);
-    
-    [_disclosureButton addTarget:self action:@selector(didTapDisclosureButton) forControlEvents:UIControlEventTouchDown];
-   // [self addSubview:_disclosureButton];
 }
 
 - (void)setLayerProperties {
@@ -178,7 +161,6 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 #pragma mark - Animations
 
 - (void)setDetailGroupAlpha:(CGFloat)alpha {
-    self.disclosureButton.alpha = alpha;
     self.titleLabel.alpha = alpha;
     self.subtitleLabel.alpha = alpha;
 }
