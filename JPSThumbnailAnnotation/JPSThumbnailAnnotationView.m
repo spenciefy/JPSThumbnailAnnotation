@@ -71,7 +71,7 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 }
 
 - (void)setupTitleLabel {
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-32.0f, 16.0f, 168.0f, 20.0f)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-32.0f, 16.0f, 180.0f, 20.0f)];
     _titleLabel.textColor = [UIColor darkTextColor];
     _titleLabel.font = [UIFont boldSystemFontOfSize:17];
     _titleLabel.minimumScaleFactor = 0.8f;
@@ -80,7 +80,7 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 }
 
 - (void)setupSubtitleLabel {
-    _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-32.0f, 36.0f, 168.0f, 20.0f)];
+    _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-32.0f, 36.0f, 180.0f, 20.0f)];
     _subtitleLabel.textColor = [UIColor grayColor];
     _subtitleLabel.font = [UIFont systemFontOfSize:12.0f];
     [self addSubview:_subtitleLabel];
@@ -112,14 +112,13 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
     self.imageView.image = thumbnail.image;
     self.expandBlock = thumbnail.expandBlock;
     self.shrinkBlock = thumbnail.shrinkBlock;
-
+    
 }
 
 #pragma mark - JPSThumbnailAnnotationViewProtocol
 
 - (void)didSelectAnnotationViewInMap:(MKMapView *)mapView {
     // Center map at annotation point
-    [mapView setCenterCoordinate:self.coordinate animated:YES];
     [self expand];
 }
 
@@ -131,30 +130,30 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 
 - (CGPathRef)newBubbleWithRect:(CGRect)rect {
     CGFloat stroke = 1.0f;
-	CGFloat radius = 7.0f;
-	CGMutablePathRef path = CGPathCreateMutable();
-	CGFloat parentX = rect.origin.x + rect.size.width/2.0f;
-	
-	// Determine Size
-	rect.size.width -= stroke + 14.0f;
-	rect.size.height -= stroke + 29.0f;
-	rect.origin.x += stroke / 2.0f + 7.0f;
-	rect.origin.y += stroke / 2.0f + 7.0f;
+    CGFloat radius = 7.0f;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGFloat parentX = rect.origin.x + rect.size.width/2.0f;
     
-	// Create Callout Bubble Path
-	CGPathMoveToPoint(path, NULL, rect.origin.x, rect.origin.y + radius);
-	CGPathAddLineToPoint(path, NULL, rect.origin.x, rect.origin.y + rect.size.height - radius);
-	CGPathAddArc(path, NULL, rect.origin.x + radius, rect.origin.y + rect.size.height - radius, radius, M_PI, M_PI_2, 1);
-	CGPathAddLineToPoint(path, NULL, parentX - 14.0f, rect.origin.y + rect.size.height);
-	CGPathAddLineToPoint(path, NULL, parentX, rect.origin.y + rect.size.height + 14.0f);
-	CGPathAddLineToPoint(path, NULL, parentX + 14.0f, rect.origin.y + rect.size.height);
-	CGPathAddLineToPoint(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height);
-	CGPathAddArc(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height - radius, radius, M_PI_2, 0.0f, 1.0f);
-	CGPathAddLineToPoint(path, NULL, rect.origin.x + rect.size.width, rect.origin.y + radius);
-	CGPathAddArc(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + radius, radius, 0.0f, -M_PI_2, 1.0f);
-	CGPathAddLineToPoint(path, NULL, rect.origin.x + radius, rect.origin.y);
-	CGPathAddArc(path, NULL, rect.origin.x + radius, rect.origin.y + radius, radius, -M_PI_2, M_PI, 1.0f);
-	CGPathCloseSubpath(path);
+    // Determine Size
+    rect.size.width -= stroke + 14.0f;
+    rect.size.height -= stroke + 29.0f;
+    rect.origin.x += stroke / 2.0f + 7.0f;
+    rect.origin.y += stroke / 2.0f + 7.0f;
+    
+    // Create Callout Bubble Path
+    CGPathMoveToPoint(path, NULL, rect.origin.x, rect.origin.y + radius);
+    CGPathAddLineToPoint(path, NULL, rect.origin.x, rect.origin.y + rect.size.height - radius);
+    CGPathAddArc(path, NULL, rect.origin.x + radius, rect.origin.y + rect.size.height - radius, radius, M_PI, M_PI_2, 1);
+    CGPathAddLineToPoint(path, NULL, parentX - 14.0f, rect.origin.y + rect.size.height);
+    CGPathAddLineToPoint(path, NULL, parentX, rect.origin.y + rect.size.height + 14.0f);
+    CGPathAddLineToPoint(path, NULL, parentX + 14.0f, rect.origin.y + rect.size.height);
+    CGPathAddLineToPoint(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height);
+    CGPathAddArc(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height - radius, radius, M_PI_2, 0.0f, 1.0f);
+    CGPathAddLineToPoint(path, NULL, rect.origin.x + rect.size.width, rect.origin.y + radius);
+    CGPathAddArc(path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + radius, radius, 0.0f, -M_PI_2, 1.0f);
+    CGPathAddLineToPoint(path, NULL, rect.origin.x + radius, rect.origin.y);
+    CGPathAddArc(path, NULL, rect.origin.x + radius, rect.origin.y + radius, radius, -M_PI_2, M_PI, 1.0f);
+    CGPathCloseSubpath(path);
     return path;
 }
 
@@ -166,7 +165,7 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 }
 
 - (void)expand {
-     if (self.expandBlock) self.expandBlock();
+    if (self.expandBlock) self.expandBlock();
     
     if (self.state != JPSThumbnailAnnotationViewStateCollapsed) return;
     
@@ -184,11 +183,11 @@ static CGFloat const kJPSThumbnailAnnotationViewAnimationDuration = 0.25f;
 
 - (void)shrink {
     if (self.shrinkBlock) self.shrinkBlock();
-
+    
     if (self.state != JPSThumbnailAnnotationViewStateExpanded) return;
     
     self.state = JPSThumbnailAnnotationViewStateAnimating;
-
+    
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
                             self.frame.size.width - kJPSThumbnailAnnotationViewExpandOffset,
